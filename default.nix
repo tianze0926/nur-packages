@@ -15,6 +15,7 @@
   overlays = import ./overlays; # nixpkgs overlays
 
   typst-svg-emoji = pkgs.callPackage ./pkgs/typst-svg-emoji { };
+  xwayland-libdecor = pkgs.callPackage ./pkgs/xwayland-libdecor { };
   # some-qt5-package = pkgs.libsForQt5.callPackage ./pkgs/some-qt5-package { };
   # ...
 }
