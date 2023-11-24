@@ -14,7 +14,14 @@
   modules = import ./modules; # NixOS modules
   overlays = import ./overlays; # nixpkgs overlays
 
-  typst-svg-emoji = pkgs.callPackage ./pkgs/typst-svg-emoji { };
   # some-qt5-package = pkgs.libsForQt5.callPackage ./pkgs/some-qt5-package { };
   # ...
 }
+// (builtins.listToAttrs (builtins.map (p: {
+  name = builtins.baseNameOf p;
+  value = pkgs.callPackage p { };
+}) [
+  ./pkgs/typst-svg-emoji
+  ./pkgs/xdp-screen-cast
+] ))
+
