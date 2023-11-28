@@ -23,5 +23,6 @@
 }) [
   ./pkgs/typst-svg-emoji
   ./pkgs/xdp-screen-cast
+  ./pkgs/tmux
 ] ))
 
