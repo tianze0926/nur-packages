@@ -23,7 +23,7 @@ stdenv.mkDerivation rec {
     owner = "owncloud";
     repo = "client";
     rev = "refs/tags/v${version}";
-    hash = "sha256-SSMNmWrCT1sGa38oY8P84QNedNkQPcIRWrV9B65B5X8=";
+    hash = "sha256-oSy+IvyZMnV4+8uYQcD7FdCSeVFrJl0Pdv3AqUCampo=";
   };
 
   nativeBuildInputs = [
