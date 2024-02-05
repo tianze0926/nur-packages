@@ -9,7 +9,9 @@
     rev = version;
     hash = "sha256-ZMlpSOmZTykJPR/eqeJ1wr1sCvgj6UwfAXdpavy4hvQ=";
   };
-  patches = [];
+  patches = [
+    ./input_buf.patch # https://github.com/tmux/tmux/issues/3668#issuecomment-1689540241
+  ];
   configureFlags = (x.configureFlags or []) ++ [
     "--enable-sixel"
   ];
