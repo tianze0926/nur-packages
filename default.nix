@@ -25,5 +25,6 @@
   ./pkgs/xdp-screen-cast
   ./pkgs/tmux
   ./pkgs/owncloud-client
+  ./pkgs/ctpv
 ] ))
 
