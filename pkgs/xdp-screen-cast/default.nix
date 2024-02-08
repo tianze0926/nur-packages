@@ -12,6 +12,9 @@
     rev = version;
     hash = "sha256-d14WJgttn2FCbIUqj/l634E8gZTkeoMnc5zP0PzZV6c=";
   };
+  patches = [
+    ./fix.patch # https://github.com/taoky/scripts/blob/5ddebe425e5703427015ce4da52a66048776fc40/bin/xdp-screen-cast
+  ];
 
   nativeBuildInputs = buildInputs;
   buildInputs = [

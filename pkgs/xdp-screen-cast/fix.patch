@@ -1,0 +1,34 @@
+--- a/xdp-screen-cast.py	2024-02-08 21:20:59.313262540 +0800
++++ b/xdp-screen-cast.py	2024-02-08 21:33:26.590242148 +0800
+@@ -23,7 +23,7 @@
+ 
+ def terminate():
+     if pipeline is not None:
+-        self.player.set_state(Gst.State.NULL)
++        pipeline.set_state(Gst.State.NULL)
+     loop.quit()
+ 
+ request_token_counter = 0
+@@ -61,12 +61,14 @@
+         terminate()
+ 
+ def play_pipewire_stream(node_id):
++    global pipeline
+     empty_dict = dbus.Dictionary(signature="sv")
+     fd_object = portal.OpenPipeWireRemote(session, empty_dict,
+                                           dbus_interface=screen_cast_iface)
+     fd = fd_object.take()
+     pipeline = Gst.parse_launch('pipewiresrc fd=%d path=%u ! videoconvert ! xvimagesink'%(fd, node_id))
+     pipeline.set_state(Gst.State.PLAYING)
++    pipeline.get_bus().add_signal_watch()
+     pipeline.get_bus().connect('message', on_gst_message)
+ 
+ def on_start_response(response, results):
+@@ -104,6 +106,7 @@
+     screen_cast_call(portal.SelectSources, on_select_sources_response,
+                      session,
+                      options={ 'multiple': False,
++                               'cursor_mode': dbus.UInt32(2),
+                                'types': dbus.UInt32(1|2) })
+ 
+ portal = bus.get_object('org.freedesktop.portal.Desktop',
