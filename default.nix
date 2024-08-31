@@ -6,7 +6,7 @@
 # commands such as:
 #     nix-build -A mypackage
 
-{ pkgs ? import <nixpkgs> { }, inputs, system }:
+{ pkgs ? import <nixpkgs> { } }:
 
 {
   # The `lib`, `modules`, and `overlay` names are special
@@ -16,7 +16,6 @@
 
   # some-qt5-package = pkgs.libsForQt5.callPackage ./pkgs/some-qt5-package { };
   # ...
-  wezterm = inputs.wezterm.packages.${system}.default;
 }
 // (builtins.listToAttrs (builtins.map (p: {
   name = builtins.baseNameOf p;

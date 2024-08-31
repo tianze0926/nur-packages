@@ -20,9 +20,10 @@
       forAllSystems = f: nixpkgs.lib.genAttrs systems (system: f system);
     in
     {
-      legacyPackages = forAllSystems (system: import ./default.nix {
+      legacyPackages = forAllSystems (system: (import ./default.nix {
         pkgs = import nixpkgs { inherit system; };
-        inherit inputs system;
+      }) // {
+        wezterm = inputs.wezterm.packages.${system}.default;
       });
       packages = forAllSystems (system: nixpkgs.lib.filterAttrs (_: v: nixpkgs.lib.isDerivation v) self.legacyPackages.${system});
     };
