@@ -69,7 +69,7 @@ jobs:
           -I $PWD
     - name: Build nix packages
       # run: nix shell -f '<nixpkgs>' nix-build-uncached -c nix-build-uncached ci.nix -A cacheOutputs
-      run: nix run github:Mic92/nix-fast-build -- --skip-cached --no-nom --flake ".#packages.$(nix eval --raw --impure --expr builtins.currentSystem) --cachix-cache ${{ matrix.cachixName }}"
+      run: nix run github:Mic92/nix-fast-build -- --skip-cached --no-nom --flake ".#packages.$(nix eval --raw --impure --expr builtins.currentSystem)" --cachix-cache ${{ matrix.cachixName }}
     - name: Trigger NUR update
       # Don't replace <YOUR_REPO_NAME> here!
       if: ${{ matrix.nurRepo != '<YOUR_REPO_NAME>' }}
