@@ -10,6 +10,8 @@ on:
     # TIP: Choose a random time here so not all repositories are build at once:
     # https://www.random.org/clock-times/?num=1&earliest=01%3A00&latest=08%3A00&interval=5&format=html&rnd=new
     - cron:  '43 20 * * *'
+permissions:
+  contents: write
 jobs:
   tests:
     strategy:
@@ -48,8 +50,6 @@ jobs:
         extra_nix_config: |
           experimental-features = nix-command flakes
           access-tokens = github.com=${{ secrets.GITHUB_TOKEN }}
-    - name: Show nixpkgs version
-      run: nix-instantiate --eval -E '(import <nixpkgs> {}).lib.version'
     - name: Setup cachix
       uses: cachix/cachix-action@v13
       # Don't replace <YOUR_CACHIX_NAME> here!
@@ -58,8 +58,21 @@ jobs:
         name: ${{ matrix.cachixName }}
         signingKey: '${{ secrets.CACHIX_SIGNING_KEY }}'
         authToken: '${{ secrets.CACHIX_AUTH_TOKEN }}'
+    - name: Update nix flake
+      run: |
+        nix flake update
+        if [ -n "$(git status --porcelain --untracked-files=no)" ]; then
+          git config --local user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git config --local user.name "github-actions[bot]"
+          git commit -a -m "update"
+        fi
     - name: Build nix packages
       run: nix run github:Mic92/nix-fast-build -- --skip-cached --no-nom --flake ".#packages.$(nix eval --raw --impure --expr builtins.currentSystem)" --cachix-cache ${{ matrix.cachixName }}
+    - name: Push changes
+      uses: ad-m/github-push-action@master
+      with:
+        github_token: ${{ secrets.GITHUB_TOKEN }}
+        branch: ${{ github.ref }}
     - name: Trigger NUR update
       # Don't replace <YOUR_REPO_NAME> here!
       if: ${{ matrix.nurRepo != '<YOUR_REPO_NAME>' }}
