@@ -2,10 +2,7 @@
   description = "My personal NUR repository";
   inputs = {
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-unstable";
-    wezterm = {
-      url = "github:wez/wezterm?dir=nix";
-      inputs.nixpkgs.follows = "nixpkgs";
-    };
+    wezterm.url = "github:wez/wezterm?dir=nix";
   };
   outputs = { self, nixpkgs, ... } @ inputs:
     let
